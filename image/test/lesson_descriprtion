@@ -41,4 +41,35 @@ nosql이 rdb를 대체하려고 하였으나 그럴 수 없었기에 rdb에서 �
         rdb에서는 위도 경도로 현재 위치 기준 반경 300미터로 하면 사각형 형태의 데이터를 수집하게된다.
         monggoDB는 데이터 처리 방식이 function으로 찾아다님.
 
-ㅇ
+2024.10.29
+node_modules
+    문제:
+    크기와 디스크 할당 크기가 다름
+    불필요하게 용량을 많이 잡아먹음
+
+    해결방안:
+    package.json에 의존성을 추가해주고 npm install해주면 필요한 의존성만 받아옴.
+
+cjs와 mjs의 차이
+    cjs = 전통적인 node.js의 방식(Commonjs)
+
+          자바 스크립트에서 모듈 시스템을 지원하지 않기 때문에
+          모듈을 지원하기위해 생겨남
+          'require()'를 이용함 - 확장자가 cjs 혹은 js일때
+          람다식 사용
+
+    ECMA Script = 유럽에서 주권을 가지고 있음.
+
+          mjs확장자일때 ES Modules사용
+          import {} from 형태를 사용
+          express가 람다식을 대신함
+    
+람다식과 function의 차이
+    람다식:
+        데이터에 코드가 들어가서 작동하는 방식
+    function:
+        코드에 데이터가 들어와서 작동하는 방식
+
+자바 스크립트에서 attribute를 access하는 방법 두 가지
+    . 과 []
+
