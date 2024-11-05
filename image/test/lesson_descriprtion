@@ -73,3 +73,15 @@ cjs와 mjs의 차이
 자바 스크립트에서 attribute를 access하는 방법 두 가지
     . 과 []
 
+2024.11.05
+httpserver와 express의 차이
+    express를 사용하면 좀 더 간략화해서 작성가능하다.
+
+async - await
+monggoDB는 
+클러스터링(?)
+
+express만 가지고 규모가 큰 웹을 만들수는 없기에 스프링 프레임워크같은 형태를 띄는 것들을 사용함
+    @나 dependency같은 것과 비슷한 것들을 사용해야함.
+    express를 감싸서 next.js를 씀.
+    단점: 자바보다는 지저분하고 자바 스크립트의 한계를 맞이하게 되서 typescript로 넘어가게 됨.
