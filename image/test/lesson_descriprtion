@@ -85,3 +85,8 @@ express만 가지고 규모가 큰 웹을 만들수는 없기에 스프링 프�
     @나 dependency같은 것과 비슷한 것들을 사용해야함.
     express를 감싸서 next.js를 씀.
     단점: 자바보다는 지저분하고 자바 스크립트의 한계를 맞이하게 되서 typescript로 넘어가게 됨.
+
+2024.11.12
+mustache.js, jsp, typeleaf, ejs
+
+
