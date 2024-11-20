@@ -1,51 +1,57 @@
-const http = require("node:http")
-const express = require("express")
-const bodyParser = require("body-parser");
+const express = require("express");
 const session = require("express-session");
+const router = express.Router();
 
-const port = 7337;
-const host = "127.0.0.1";
+// static 파일 제공을 위한 미들웨어
+router.use(express.static("public")); // static 파일을 처리
 
-const app = express(); //객체생성
+// form 데이터 처리 미들웨어
+router.use(express.urlencoded({ extended: true })); // URL 인코딩된 데이터 처리
+router.use(express.json()); // JSON 데이터 처리
 
-//static 컨텐츠를 처리하는 미들웨어
-app.use(express.static("public"));//미들웨어를 사용하겠다
+// session middleware 설정
+router.use(
+  session({
+    secret: "1234567890", // 비밀 키 설정
+    resave: false, // 세션이 수정되지 않으면 저장하지 않음
+    saveUninitialized: true, // 초기화되지 않은 세션도 저장
+  })
+);
 
-//<form method = 'post'> 값들을 파싱해서 req.body 객체로 변환
-app.use(bodyParser.urlencoded({extended: true})); 
+// 로그인 요청 처리
+router.post("/login", (req, res) => {
+  const { userId, password } = req.body;
 
-//session middleware
-app.use(session({
-    secret: "1234567890",
-    resave: false,
-    saveUninitialized: true
-})); 
+  console.log(`login request: ${userId} ${password}`);
 
-app.post("/login", (req, res) =>{
-    const {id, password} = req.body;    
+  if (
+    userId === req.session.member.userId &&
+    password === req.session.member.password
+  ) {
+    console.log("Login successful");
 
-    console.log(`login request: ${id} ${password}`);
-
-    if(id == "dfdf" && password == "dfdf"){
-        console.log("success");
-
-        req.session.member = {id, password, name : "홍박사"};// member 객체에 넣어줌
-
-
-    } else{
-        console.log("login failed");
+    req.session.member = { userId, password, username: "홍박사" }; // 세션에 사용자 정보 저장
+    res.redirect("/"); // 로그인 후 리디렉션
+    } else {
+        console.log("Login failed");
+        res.status(401).send("Login failed"); // 로그인 실패 시 오류 응답
     }
-
-    res.redirect("/");
-});
-app.get("/logout", (req, res) =>{
-    test = req.session.member.id;
-    console.log(test);
-
-    req.session.destroy();
-    res.redirect("/");
 });
 
-http.createServer(app).listen(port, host, () => {
-    console.log(`접속하세요 : http://${host}:${port}`);
+// 로그아웃 요청 처리
+router.get("/logout", (req, res) => {
+  if (req.session.member) {
+    console.log(`Logging out user: ${req.session.member.userId}`);
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send("Failed to destroy session");
+      }
+      res.redirect("/"); // 로그아웃 후 리디렉션
+    });
+  } else {
+    console.log("No user to log out");
+    res.redirect("/"); // 이미 로그인이 되어 있지 않다면 홈으로 리디렉션
+  }
 });
+
+module.exports = router; // 라우터를 외부에서 사용할 수 있게 export
