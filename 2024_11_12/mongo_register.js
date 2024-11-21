@@ -4,6 +4,24 @@ const uri =
   "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
+//해당하는 아이디 찾기
+async function findId(item) {
+    try {
+      await client.connect();
+      
+      const collection = await client.db("tester").collection("users");
+      const result = await collection.findOne({ _id: item.userId });
+  
+      console.log(result);
+  
+      return result;
+  
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
+    }
+  }
+
 async function list() {
   try {
     await client.connect();
@@ -80,5 +98,4 @@ async function remove(item) {
       }
     }
 //    remove().catch(console.dir);
-module.exports = {list, add, update, remove};
-
+module.exports = {list, add, update, remove, findId};

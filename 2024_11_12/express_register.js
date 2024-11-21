@@ -13,26 +13,47 @@ const sendList = async (req, res) => {
         const list = await mongo.list(); // Promise로 넘어오는 것을 감싸서 이게 끝났을 때 다음으로 넘어감
         console.log(list);
         res.header("Content-Type", "application/json; charset=utf8");
-        res.end(JSON.stringify(list));
+        res.send(`
+            <script>
+                alert("회원가입이 완료되었습니다.");
+                window.location.href = "/login.ejs"; // 로그인 페이지로 리디렉션
+            </script>
+        `);
     } catch (error) {
         console.error("Error fetching list:", error);
         res.status(500).send("Error fetching list");
     }
 };
 
-router.get("/register", sendList);
+router.get("/register", async (req, res) => {
+    await res.render("register"); // 렌더링
+  });
 
 router.post("/register", async (req, res) => {
     try {
         console.log("Received POST request:", req.body);
         const item = req.body;
+        const existingUser = await mongo.findId(item);
+
+        console.log(existingUser);
+        if(existingUser === null){
+
         await mongo.add(item);
-        sendList(req, res);
         res.send(`
             <script>
                 alert("회원가입이 완료되었습니다.");
+                window.location.href = "/login.ejs"; // 로그인 페이지로 리디렉션
             </script>
         `);
+
+        } else{
+            res.send(`
+                <script>
+                    alert("이미 있는 아이디입니다.");
+                    window.location.href = "/register"; // 회원가입 페이지로 리디렉션
+                </script>
+            `);
+         }
     } catch (error) {
         console.error("Error adding item:", error);
         res.status(500).send("Error adding item");
