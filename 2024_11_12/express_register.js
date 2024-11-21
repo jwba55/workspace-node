@@ -16,7 +16,7 @@ const sendList = async (req, res) => {
         res.send(`
             <script>
                 alert("회원가입이 완료되었습니다.");
-                window.location.href = "/login.ejs"; // 로그인 페이지로 리디렉션
+                window.location.href = "/login"; // 로그인 페이지로 리디렉션
             </script>
         `);
     } catch (error) {
@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
         res.send(`
             <script>
                 alert("회원가입이 완료되었습니다.");
-                window.location.href = "/login.ejs"; // 로그인 페이지로 리디렉션
+                window.location.href = "/login"; // 로그인 페이지로 리디렉션
             </script>
         `);
 
